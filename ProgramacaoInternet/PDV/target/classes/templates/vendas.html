@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Vendas</title>
+    <link rel="stylesheet" th:href="@{/vendas.css}"/>
+</head>
+<body>
+    <div class="card">
+        <div>
+            <h1>Lista Vendas</h1>
+            <table>
+                <thead>
+                <tr>
+                    <th class="coluna-nome">ID</th>
+                    <th class="coluna-nome">Observações</th>
+                    <th class="coluna-nome">Data</th>
+                    <th class="coluna-nome">Valor Total</th>
+                    <th class="coluna-nome">ID Cliente</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="venda : ${vendas}">
+                    <td th:text="${venda.id}"></td>
+                    <td th:text="${venda.observacoes}"></td>
+                    <td th:text="${venda.data}"></td>
+                    <td th:text="${venda.total}"></td>
+                    <td th:text="${venda.cliente.id}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
