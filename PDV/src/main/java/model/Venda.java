@@ -10,14 +10,23 @@ package model;
  */
 public class Venda {
     
-    private String nomeCliente;
+    private int clienteId;
     private int quantidade;
     private String observacoes;
     private double valorTotal;
     private double valorUnitario;
+    private int produtoId;
 
-    public String getNomeCliente() {
-        return nomeCliente;
+    public int getClienteId() {
+        return clienteId;
+    }
+
+    public int getProdutoId() {
+        return produtoId;
+    }
+
+    public void setProdutoId(int produtoId) {
+        this.produtoId = produtoId;
     }
 
     public double getValorUnitario() {
@@ -28,8 +37,8 @@ public class Venda {
         this.valorUnitario = valorUnitario;
     }
 
-    public void setNomeCliente(String nomeCliente) {
-        this.nomeCliente = nomeCliente;
+    public void setClienteId(int clienteId) {
+        this.clienteId = clienteId;
     }
 
     public int getQuantidade() {

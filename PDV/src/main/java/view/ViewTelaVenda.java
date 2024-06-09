@@ -1,15 +1,13 @@
 package view;
 
-import static com.fasterxml.jackson.databind.cfg.CoercionInputShape.String;
 import dao.VendasDAO;
-import dto.ClienteDTO;
-import dto.PdvDTO;
-import java.util.List;
+import dto.ProdutoDTO;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import model.Cliente;
 import model.Produto;
 import model.Venda;
-import service.ClienteService;
+import service.ProdutoService;
 
 /**
  *
@@ -18,6 +16,7 @@ import service.ClienteService;
 public class ViewTelaVenda extends javax.swing.JFrame {
 
     private VendasDAO vendasDao = new VendasDAO();
+    private ProdutoService produtoService;
 
     /**
      * Creates new form ViewTelaVenda
@@ -25,12 +24,7 @@ public class ViewTelaVenda extends javax.swing.JFrame {
     public ViewTelaVenda() {
         initComponents();
         setLocationRelativeTo(this);
-        
-        
-        
     }
-
-        
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -43,15 +37,15 @@ public class ViewTelaVenda extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         btConcluirVenda = new javax.swing.JButton();
-        btCancelarVenda = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         tfDescricao = new javax.swing.JTextField();
         cbCliente = new javax.swing.JComboBox<>();
         cbProduto = new javax.swing.JComboBox<>();
         tfQuantidade = new javax.swing.JTextField();
-        tfValorTotal = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         lbValorUnitario = new javax.swing.JLabel();
+        lbVlUnitario = new javax.swing.JLabel();
+        lbVlTotal = new javax.swing.JLabel();
 
         jLabel1.setText("jLabel1");
 
@@ -80,13 +74,6 @@ public class ViewTelaVenda extends javax.swing.JFrame {
             }
         });
 
-        btCancelarVenda.setText("Cancelar Venda");
-        btCancelarVenda.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btCancelarVendaActionPerformed(evt);
-            }
-        });
-
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel7.setText("Observações:");
 
@@ -109,36 +96,33 @@ public class ViewTelaVenda extends javax.swing.JFrame {
                         .addGap(42, 42, 42)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(tfDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(cbProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(cbCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(tfValorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(18, 18, 18)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(tfQuantidade, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
-                                        .addComponent(lbValorUnitario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(55, 55, 55)
-                        .addComponent(btConcluirVenda)
-                        .addGap(48, 48, 48)
-                        .addComponent(btCancelarVenda))
+                                    .addComponent(cbCliente, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(cbProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(tfQuantidade, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
+                                    .addComponent(lbValorUnitario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lbVlUnitario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lbVlTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(104, 104, 104)
-                        .addComponent(jLabel2)))
+                        .addComponent(jLabel2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(55, 55, 55)
+                        .addComponent(btConcluirVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(24, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -161,19 +145,18 @@ public class ViewTelaVenda extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(lbValorUnitario))
-                .addGap(24, 24, 24)
+                    .addComponent(lbValorUnitario)
+                    .addComponent(lbVlUnitario, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(tfValorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
+                    .addComponent(lbVlTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
                 .addComponent(jLabel7)
                 .addGap(18, 18, 18)
                 .addComponent(tfDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(82, 82, 82)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btConcluirVenda)
-                    .addComponent(btCancelarVenda))
+                .addComponent(btConcluirVenda)
                 .addGap(140, 140, 140))
         );
 
@@ -183,16 +166,22 @@ public class ViewTelaVenda extends javax.swing.JFrame {
     private void btConcluirVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btConcluirVendaActionPerformed
         Venda novaVenda = new Venda();
 
-        int clienteId = (int) cbCliente.getSelectedItem();
-        Cliente clienteSelecionado = ClienteDTO.getClientePorId(clienteId);
-
-        int produtoId = (int) cbProduto.getSelectedItem();
-        Produto produtoSelecionado = PdvDTO.getProdutoPorId(produtoId);
-
-        novaVenda.setNomeCliente(clienteSelecionado.getNome());
-        novaVenda.setQuantidade(produtoSelecionado.getQuantidade());
-        novaVenda.setValorTotal(Double.parseDouble(tfValorTotal.getText()));
-        novaVenda.setValorUnitario(produtoSelecionado.getValorUnitario());
+        var quantidade = Integer.parseInt(tfQuantidade.getText());
+        int clienteSelecionado = (int) cbCliente.getSelectedItem();       
+        int produtoSelecionado = (int) cbProduto.getSelectedItem();
+        
+        ProdutoDTO produto = null;
+        try {
+            produto = produtoService.buscaProduto(produtoSelecionado);
+        } catch (Exception ex) {
+            Logger.getLogger(ViewTelaVenda.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        novaVenda.setClienteId(clienteSelecionado);
+        novaVenda.setProdutoId(produtoSelecionado);
+        novaVenda.setQuantidade(quantidade);
+        novaVenda.setValorTotal(Double.parseDouble(produto.getValor()) * quantidade);
+        novaVenda.setValorUnitario(Double.parseDouble(produto.getValor()));
         novaVenda.setObservacoes(tfDescricao.getText());
 
         if (vendasDao.salvar(novaVenda)) {
@@ -208,13 +197,8 @@ public class ViewTelaVenda extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btConcluirVendaActionPerformed
 
-    private void btCancelarVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarVendaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btCancelarVendaActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btCancelarVenda;
     private javax.swing.JButton btConcluirVenda;
     private javax.swing.JComboBox<String> cbCliente;
     private javax.swing.JComboBox<String> cbProduto;
@@ -227,8 +211,9 @@ public class ViewTelaVenda extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel lbValorUnitario;
+    private javax.swing.JLabel lbVlTotal;
+    private javax.swing.JLabel lbVlUnitario;
     private javax.swing.JTextField tfDescricao;
     private javax.swing.JTextField tfQuantidade;
-    private javax.swing.JTextField tfValorTotal;
     // End of variables declaration//GEN-END:variables
 }

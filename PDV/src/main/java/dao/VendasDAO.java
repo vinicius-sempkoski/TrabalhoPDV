@@ -20,8 +20,8 @@ public class VendasDAO extends GenericDAO<Venda> {
 
         try {
             venda = new Venda();
-            venda.setNomeCliente(
-                    rs.getString("CLIENTE_VENDA"));
+            venda.setClienteId(
+                    rs.getInt("CLIENTE_ID"));
             venda.setQuantidade(
                     rs.getInt("QUANTIDADE_VENDA"));
             venda.setValorTotal(
@@ -38,14 +38,14 @@ public class VendasDAO extends GenericDAO<Venda> {
     @Override
     public boolean salvar(Venda obj) {
         String sql = "INSERT INTO public.\"Venda\"(\""
-                + "CLIENTE_VENDA\", \"QUANTIDADE_VENDA\", \"VALOR_TOTAL_VENDA\", \"OBSERVACOES_VENDA\")"
+                + "CLIENTE_ID\", \"QUANTIDADE_VENDA\", \"VALOR_TOTAL_VENDA\", \"OBSERVACOES_VENDA\")"
                 + "VALUES (?, ?, ?, ?);";
 
         PreparedStatement ps = null;
 
         try {
             ps = conn.prepareStatement(sql);
-            ps.setString(1, obj.getNomeCliente());
+            ps.setInt(1, obj.getClienteId());
             ps.setInt(2, obj.getQuantidade());
             ps.setDouble(3, obj.getValorTotal());
             ps.setString(4, obj.getObservacoes());
@@ -62,13 +62,13 @@ public class VendasDAO extends GenericDAO<Venda> {
 
     @Override
     public boolean atualizar(Venda obj) {
-                String sql = "UPDATE public.\"Venda\" SET \"QUANTIDADE_VENDA\" = ?, \"VALOR_TOTAL_VENDA\" = ? WHERE \"CLIENTE_VENDA\" = ? ;";
+                String sql = "UPDATE public.\"Venda\" SET \"QUANTIDADE_ID\" = ?, \"VALOR_TOTAL_VENDA\" = ? WHERE \"CLIENTE_VENDA\" = ? ;";
         
         PreparedStatement ps = null;
         
         try {
             ps = conn.prepareStatement(sql);
-            ps.setString(1, obj.getNomeCliente());
+            ps.setInt(1, obj.getClienteId());
             ps.setInt(2, obj.getQuantidade());
             ps.setDouble(3, obj.getValorTotal());
             ps.setString(4, obj.getObservacoes());

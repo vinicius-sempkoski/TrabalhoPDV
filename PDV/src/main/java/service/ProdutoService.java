@@ -2,7 +2,7 @@ package service;
 
 import com.google.gson.Gson;
 import com.mycompany.pdv.Util;
-import dto.ClienteDTO;
+import dto.ProdutoDTO;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -12,7 +12,7 @@ public class ProdutoService {
     private static String URLWEBSERVICE = "";
     private static int SUCESSO = 200;
     
-    public static ClienteDTO buscaCliente(String id) throws Exception{
+    public static ProdutoDTO buscaProduto(int id) throws Exception{
         String urlChamada = URLWEBSERVICE + id + "/json";
         
         try{
@@ -31,12 +31,11 @@ public class ProdutoService {
             String json = Util.converteJsonString(resposta);
             
             Gson gson = new Gson();
-            ClienteDTO dto = gson.fromJson(json, ClienteDTO.class);
+            ProdutoDTO dto = gson.fromJson(json, ProdutoDTO.class);
                     
-            return dto; 
-            
+            return dto;
         }catch(Exception ex){
-            throw new Exception("Erro ao retornar endereço: "+ex);
+            throw new Exception("Erro ao retornar produto: "+ex);
         }
 
     }

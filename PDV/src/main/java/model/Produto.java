@@ -8,7 +8,7 @@ public class Produto {
 
     private int id;
     private String descricao;
-    private String valor;
+    private Double valor;
     private String categoria;
 
     public int getId() {
@@ -27,11 +27,11 @@ public class Produto {
         this.descricao = descricao;
     }
 
-    public String getValor() {
+    public Double getValor() {
         return valor;
     }
 
-    public void setValor(String valor) {
+    public void setValor(Double valor) {
         this.valor = valor;
     }
 

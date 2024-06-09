@@ -14,9 +14,9 @@ import java.util.logging.Logger;
 public class ConexaoPostgres {
 
     private static final String DRIVER = "org.postgresql.Driver";
-    private static final String URL = "jdbc:postgresql://localhost:5432/PDV";
+    private static final String URL = "jdbc:postgresql://localhost:5432/pdv";
     private static final String USER = "postgres";
-    private static final String PASSWORD = "2704";
+    private static final String PASSWORD = "bart1234";
 
     //abrir conexão com o BD
     public static Connection getConection() {
@@ -35,7 +35,6 @@ public class ConexaoPostgres {
         }
 
         return null;
-
     }
 
     public static void closeConnection(Connection conn) {

@@ -7,9 +7,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import model.Cliente;
 
 /**
  *
@@ -20,9 +17,8 @@ public class ClienteService {
     private static String URLWEBSERVICE = "";
     private static int SUCESSO = 200;
     
-    public static ClienteDTO buscarClientes(String id) throws Exception{
+    public static ClienteDTO buscaCliente(int id) throws Exception{
         String urlChamada = URLWEBSERVICE + id + "/json";
-        List<Cliente> clientes = new ArrayList<>();
         
         try{
             URL url = new URL(urlChamada);
@@ -45,7 +41,7 @@ public class ClienteService {
             return dto; 
             
         }catch(Exception ex){
-            throw new Exception("Erro ao retornar endereço: "+ex);
+            throw new Exception("Erro ao retornar cliente: "+ex);
         }
 
     }
