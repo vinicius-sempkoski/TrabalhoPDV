@@ -14,9 +14,18 @@ public class Venda {
     private int quantidade;
     private String observacoes;
     private double valorTotal;
+    private double valorUnitario;
 
     public String getNomeCliente() {
         return nomeCliente;
+    }
+
+    public double getValorUnitario() {
+        return valorUnitario;
+    }
+
+    public void setValorUnitario(double valorUnitario) {
+        this.valorUnitario = valorUnitario;
     }
 
     public void setNomeCliente(String nomeCliente) {

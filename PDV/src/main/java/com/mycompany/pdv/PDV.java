@@ -1,10 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- */
-
 package com.mycompany.pdv;
 
 import javax.swing.JFrame;
+import view.ViewTelaVenda;
 
 /**
  *
@@ -13,7 +10,7 @@ import javax.swing.JFrame;
 public class PDV {
 
     public static void main(String[] args) {
-        ViewPrincipal view = new ViewPrincipal();
+        ViewTelaVenda view = new ViewTelaVenda();
         view.setExtendedState(JFrame.MAXIMIZED_BOTH);
         view.setVisible(true);
     }
